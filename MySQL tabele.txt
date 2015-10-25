@@ -1,0 +1,78 @@
+Create Database rezerwacja_pokoi;
+
+Use rezerwacja_pokoi;
+
+Create Table Uzytkownik
+(
+id_uzytkownika int not null primary key auto_increment,
+haslo varchar (20),
+imie varchar (20),
+nazwisko varchar (20),
+email varchar(20),
+nr_telefonu varchar (20)
+);
+
+Create Table Obiekt
+(
+id_obiektu int not null primary key auto_increment,
+nazwa_obiektu varchar(30),
+kod_pocztowy varchar(30),
+miejscowosc varchar(30),
+ulica varchar(30)
+);
+
+Create Table Pracownik
+(
+id_pracownika int not null primary key auto_increment,
+haslo varchar(10),
+imie varchar(10),
+nazwisko varchar(10),
+czy_wlasciciel boolean,
+numer_telefonu int,
+email varchar(30),
+pensja int,
+id_obiektu int references Obiekt(id_obiektu)
+);
+
+Create Table Pokoj
+(
+id_pokoju int not null primary key auto_increment,
+cena_za_dzien int,
+rodzaj_pokoju varchar(10),
+liczba_osob int,
+miejsce_parking int,
+miejsce_jadalnia int,
+id_obiektu int references Obiekt(id_obiektu)
+);
+
+Create Table Rezerwacja
+(
+id_rezerwacji int not null primary key auto_increment,
+data_rezerwacji date,
+data_przyjazdu date,
+data_wyjazdu date,
+potwierdzenie bool,
+
+id_uzytkownika int references Uzytkownik(id_uzytkownika),
+id_pokoju int references Pokoj(id_pokoju)
+
+);
+
+
+Create Table Zameldowanie
+(
+id_zameldowania int not null primary key auto_increment,
+data_zameldowania date,
+data_wymeldowania date,
+nr_dowodu varchar(15),
+pesel int,
+placona_kwota int,
+id_uzytkownika int references Uzytkownik(id_uzytkownika),
+id_pokoju int references Pokoj(id_pokoju),
+id_rezerwacji int references Rezerwacja(id_rezerwacji)
+);
+
+
+
+
+
