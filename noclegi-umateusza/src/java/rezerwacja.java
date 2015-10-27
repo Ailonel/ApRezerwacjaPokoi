@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Mateusz
  */
-@WebServlet(urlPatterns = {"/rejestracja"})
-public class rejestracja extends HttpServlet {
+@WebServlet(urlPatterns = {"/rezerwacja"})
+public class rezerwacja extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,11 +33,10 @@ public class rejestracja extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String imie = request.getParameter("imie");
-            String nazwisko = request.getParameter("nazwisko");
-            String email = request.getParameter("email");
-            String tel = request.getParameter("nrtel");
-            String haslo = request.getParameter("haslo");
+            String data = "2015-10-27";
+            String dataP = request.getParameter("dataPR") + "-" + request.getParameter("dataPM") + "-"+ request.getParameter("dataPD");
+            String dataW = request.getParameter("dataWR") + "-" + request.getParameter("dataWM") + "-"+ request.getParameter("dataWD");
+            String pokoj = request.getParameter("nrPok");
 
             //Sterowniki dla bazy danych
             Class.forName("com.mysql.jdbc.Driver");
@@ -45,20 +44,20 @@ public class rejestracja extends HttpServlet {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rezerwacja_pokoi", "root", "root");
 
             //Tworzenie rekordu
-            PreparedStatement st = con.prepareStatement("Insert into uzytkownik values(?,?,?,?,?,?)");
+            PreparedStatement st = con.prepareStatement("Insert into Rezerwacja values(?,?,?,?,?,?,?)");
 
             //st.setString(1, "NULL");
             st.setNull(1, java.sql.Types.INTEGER);
-            st.setString(3, imie);
-            st.setString(4, nazwisko);
-            st.setString(5, email);
-            st.setString(6, tel);
-            st.setString(2, haslo);
+            st.setString(2, data);
+            st.setString(3, dataP);
+            st.setString(4, dataW);
+            st.setString(5, "1");
+            st.setString(6, "1");
+            st.setString(7, pokoj);
 
             int i = st.executeUpdate();
             if (i > 0) {
-                out.println("Rejestracja zakończona pomyślnie!");
-                out.print("<br/><a href =\"index.html\">Strona Główna<br/></a>");
+                out.println("Rezerwacja zakończona pomyślnie!");
             }
         } catch (Exception se) {
             se.printStackTrace();

@@ -43,19 +43,22 @@ public class logowanie extends HttpServlet {
             //Połączenie z bazą danych
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rezerwacja_pokoi", "root", "root");
             
-            //Tworzenie rekordu
+            //szukanie rekordu
             PreparedStatement st = con.prepareStatement("select * from Uzytkownik where email=? and haslo=?");
             st.setString(1, email);
             st.setString(2, haslo);
             
             ResultSet rs=st.executeQuery();
             status=rs.next();
-            if(status)
-            out.print(status);
+            if(status){
+                request.getSession().setAttribute("zalogowany", email);
+                out.print("Zostałeś pomyślnie zalogowany");
+                out.print("<br/><a href =\"index.html\">Strona Główna<br/></a>");
+            }
             else{
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/logowanie.html");
                 //PrintWriter out= response.getWriter();
-                out.println("<font color=red>Either user name or password is wrong.</font>");
+                out.println("<font color=red>Niepoprawny login lub hasło</font>");
                 rd.include(request, response);
             }
         }catch (Exception se) {

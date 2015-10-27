@@ -14,7 +14,7 @@
         <div id="nav">
              <ul>
                 <li><a href ="index.html">Strona Główna<br/></a></li>
-                Oferta<br>
+                Galeria<br>
                 <li><a href = "kontakt.html">Kontakt<br/></a></li>
                 <li><a href = "rezerwacja.html">Rezerwacja</a></li>
                 <li><a href = "rejestracja.html">Rejestracja</a></li>
@@ -23,11 +23,16 @@
         </div>
 
         <div id="section">
-            <h1>Logowanie</h1>
-            <form method="post" action="logowanie">
-                Email: <input type="text" name="email" /><br/>
-                Haslo: <input type="password" name="haslo" /><br/>
-                <input type ="submit" value="logowanie" />
+            <h1>Rezerwacja</h1>
+            <form method="post" action="rezerwacja">
+                Data Przyjazdu: <input type="text" name="dataPD" />
+                <input type="text" name="dataPM" />
+                <input type="text" name="dataPR" /><br/>
+                Data Wyjazdu: <input type="password" name="dataWD" />
+                <input type="password" name="dataWM" />
+                <input type="password" name="dataWR" /><br/>
+                Numer pokoju: <input type="password" name="nrPok" /><br/>
+                <input type ="submit" value="rezerwacja" />
             </form>
         </div>
 

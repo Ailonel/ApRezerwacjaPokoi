@@ -6,7 +6,6 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Mateusz
  */
-@WebServlet(urlPatterns = {"/rejestracja"})
-public class rejestracja extends HttpServlet {
+@WebServlet(urlPatterns = {"/NewServlet"})
+public class NewServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,35 +32,16 @@ public class rejestracja extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String imie = request.getParameter("imie");
-            String nazwisko = request.getParameter("nazwisko");
-            String email = request.getParameter("email");
-            String tel = request.getParameter("nrtel");
-            String haslo = request.getParameter("haslo");
-
-            //Sterowniki dla bazy danych
-            Class.forName("com.mysql.jdbc.Driver");
-            //Połączenie z bazą danych
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rezerwacja_pokoi", "root", "root");
-
-            //Tworzenie rekordu
-            PreparedStatement st = con.prepareStatement("Insert into uzytkownik values(?,?,?,?,?,?)");
-
-            //st.setString(1, "NULL");
-            st.setNull(1, java.sql.Types.INTEGER);
-            st.setString(3, imie);
-            st.setString(4, nazwisko);
-            st.setString(5, email);
-            st.setString(6, tel);
-            st.setString(2, haslo);
-
-            int i = st.executeUpdate();
-            if (i > 0) {
-                out.println("Rejestracja zakończona pomyślnie!");
-                out.print("<br/><a href =\"index.html\">Strona Główna<br/></a>");
-            }
-        } catch (Exception se) {
-            se.printStackTrace();
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet NewServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
