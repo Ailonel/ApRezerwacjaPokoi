@@ -22,14 +22,14 @@ public class CRUDObiekt {
     String nazwa_obiektu, kod_pocztowy, miejscowosc, ulica;
     int id_obiektu;
 
-    public void DodajObiekt() {
+    public void DodajObiekt(Obiekt obiekt) {
         try {
             PreparedStatement st = con.prepareStatement("insert into Obiekt values (?,?,?,?,?)");
-            st.setNull(1, java.sql.Types.NULL);
-            st.setString(2, nazwa_obiektu);
-            st.setString(3, kod_pocztowy);
-            st.setString(4, miejscowosc);
-            st.setString(5, ulica);
+            st.setInt(1, obiekt.getIdObiektu());
+            st.setString(2, obiekt.getNazwaObiektu());
+            st.setString(3, obiekt.getKodPocztowy());
+            st.setString(4, obiekt.getMiejscowosc());
+            st.setString(5, obiekt.getUlica());
             st.executeUpdate();
         } catch (SQLException se) {
             se.printStackTrace();

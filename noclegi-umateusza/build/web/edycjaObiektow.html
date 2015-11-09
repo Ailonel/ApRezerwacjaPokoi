@@ -15,8 +15,10 @@
         <script src="js/localization/jquery.jtable.pl.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                $('#StudentTableContainer').jtable({
+                $('#ListaObiektow').jtable({
                     title: 'Lista Obiektów',
+                    sorting: true,
+             
                     actions: {
                         listAction: 'EdycjaObiektow?action=list',
                         createAction: 'EdycjaObiektow?action=create',
@@ -34,7 +36,7 @@
                         nazwa_obiektu: {
                             title: 'Nazwa Obiektu',
                             width: '20%',
-                            edit: false
+                            edit: true
                         },
                         kod_pocztowy: {
                             title: 'Kod Pocztowy',
@@ -53,7 +55,7 @@
                         }
                     }
                 });
-                $('#StudentTableContainer').jtable('load');
+                $('#ListaObiektow').jtable('load');
             });
         </script>
 
@@ -72,7 +74,7 @@
         </div>
 
         <div id="section">
-            <div id="StudentTableContainer"></div>
+            <div id="ListaObiektow"></div>
         </div>
 
         <div id="footer">

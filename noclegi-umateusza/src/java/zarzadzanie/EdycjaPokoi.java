@@ -20,24 +20,23 @@ import java.util.*;
  *
  * @author Mateusz
  */
-@WebServlet(name = "EdycjaObiektow", urlPatterns = {"/EdycjaObiektow"})
-public class EdycjaObiektow extends HttpServlet {
+@WebServlet(name = "EdycjaPokoi", urlPatterns = {"/EdycjaPokoi"})
+public class EdycjaPokoi extends HttpServlet {
 
-    private CRUDObiekt crud = new CRUDObiekt();
+    private CRUDPokoj crud = new CRUDPokoj();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getParameter("action") != null) {
-            List<Obiekt> lista = new ArrayList<Obiekt>();
+            List<Pokoj> lista = new ArrayList<Pokoj>();
             String action = (String) request.getParameter("action");
             Gson gson = new Gson();
             response.setContentType("application/json");
 
             if (action.equals("list")) {
                 try {
-                    lista = crud.WszystkieObiekty();
-                    JsonElement element = gson.toJsonTree(lista, new TypeToken<List<Obiekt>>() {
-                    }.getType());
+                    lista = crud.WszystkiePokoje();
+                    JsonElement element = gson.toJsonTree(lista, new TypeToken<List<Pokoj>>() {}.getType());
                     JsonArray jsonArray = element.getAsJsonArray();
                     String listData = jsonArray.toString();
                     listData = "{\"Result\":\"OK\",\"Records\":" + listData + "}";
@@ -51,36 +50,45 @@ public class EdycjaObiektow extends HttpServlet {
                 }
             }
             else if (action.equals("create") || action.equals("update")) {
-                Obiekt obiekt = new Obiekt();
+                Pokoj pokoj = new Pokoj();
+                if (request.getParameter("id_pokoju") != null) {
+                    int id_pokoju = Integer.parseInt(request.getParameter("id_pokoju"));
+                    pokoj.setIdPokoju(id_pokoju);
+                }
+                if (request.getParameter("cena_za_dzien") != null) {
+                    int cena_za_dzien = Integer.parseInt(request.getParameter("cena_za_dzien"));
+                    pokoj.setCenaZaDzien(cena_za_dzien);
+                }
+                if (request.getParameter("numer_pokoju") != null) {
+                    int numer_pokoju = Integer.parseInt(request.getParameter("numer_pokoju"));
+                    pokoj.setNumerPokoju(numer_pokoju);
+                }
+                if (request.getParameter("liczba_osob") != null) {
+                    int liczba_osob = Integer.parseInt(request.getParameter("liczba_osob"));
+                    pokoj.setLiczbaOsob(liczba_osob);
+                }
+                if (request.getParameter("miejsce_parking") != null) {
+                    int miejsce_parking = Integer.parseInt(request.getParameter("miejsce_parking"));
+                    pokoj.setMiejsceParking(miejsce_parking);
+                }
+                if (request.getParameter("miejsce_jadalnia") != null) {
+                    int miejsce_jadalnia = Integer.parseInt(request.getParameter("miejsce_jadalnia"));
+                    pokoj.setMiejsceJadalnia(miejsce_jadalnia);
+                }
                 if (request.getParameter("id_obiektu") != null) {
                     int id_obiektu = Integer.parseInt(request.getParameter("id_obiektu"));
-                    obiekt.setIdObiektu(id_obiektu);
+                    pokoj.setIdObiektu(id_obiektu);
                 }
-                if (request.getParameter("nazwa_obiektu") != null) {
-                    String nazwa_obiektu = (String) request.getParameter("nazwa_obiektu");
-                    obiekt.setNazwaObiektu(nazwa_obiektu);
-                }
-                if (request.getParameter("kod_pocztowy") != null) {
-                    String kod_pocztowy = (String) request.getParameter("kod_pocztowy");
-                    obiekt.setKodPocztowy(kod_pocztowy);
-                }
-                if (request.getParameter("miejscowosc") != null) {
-                    String miejscowosc = (String) request.getParameter("miejscowosc");
-                    obiekt.setMiejscowosc(miejscowosc);
-                }
-                if (request.getParameter("ulica") != null) {
-                    String ulica = (String) request.getParameter("ulica");
-                    obiekt.setUlica(ulica);
-                }
+                
                 try {
                     if (action.equals("create")) {
-                        crud.DodajObiekt(obiekt);
-                        lista.add(obiekt);
-                        String json = gson.toJson(obiekt);
+                        crud.DodajPokoj(pokoj);
+                        lista.add(pokoj);
+                        String json = gson.toJson(pokoj);
                         String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
                         response.getWriter().print(listData);
                     } else if (action.equals("update")){
-                        crud.EdytujObiekt(obiekt);
+                        crud.EdytujPokoj(pokoj);
                         String listData = "{\"Result\":\"OK\"}";
                         response.getWriter().print(listData);
                     }
@@ -90,9 +98,9 @@ public class EdycjaObiektow extends HttpServlet {
                 }
             }
             else if (action.equals("delete"))
-                if(request.getParameter("id_obiektu")!=null){
-                    String id_obiektu = (String)request.getParameter("id_obiektu");
-                    crud.UsunObiekt(Integer.parseInt(id_obiektu));
+                if(request.getParameter("id_pokoju")!=null){
+                    String id_pokoju = (String)request.getParameter("id_pokoju");
+                    crud.UsunPokoj(Integer.parseInt(id_pokoju));
                     String listData = "{\"Result\":\"OK\"}";
                     response.getWriter().print(listData);
                 }

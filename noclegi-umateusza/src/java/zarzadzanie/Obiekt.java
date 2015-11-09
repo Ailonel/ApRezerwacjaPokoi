@@ -59,5 +59,4 @@ public class Obiekt {
     public String toString(){
         return "Obiekt [id_obiektu=" + id_obiektu + ",nazwa_obiektu=" + nazwa_obiektu + ", kod_pocztowy=" + kod_pocztowy +", miejscowosc=" + miejscowosc + ",ulica="+ ulica +"]";
     }
-    
 }

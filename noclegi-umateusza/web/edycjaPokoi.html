@@ -15,47 +15,57 @@
         <script src="js/localization/jquery.jtable.pl.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                $('#ListaObiektow').jtable({
-                    title: 'Lista Obiektów',
+                $('#ListaPokoi').jtable({
+                    title: 'Lista Pokoi',
                     sorting: true,
              
                     actions: {
-                        listAction: 'EdycjaObiektow?action=list',
-                        createAction: 'EdycjaObiektow?action=create',
-                        updateAction: 'EdycjaObiektow?action=update',
-                        deleteAction: 'EdycjaObiektow?action=delete'
+                        listAction: 'EdycjaPokoi?action=list',
+                        createAction: 'EdycjaPokoi?action=create',
+                        updateAction: 'EdycjaPokoi?action=update',
+                        deleteAction: 'EdycjaPokoi?action=delete'
                     },
                     fields: {
-                        id_obiektu: {
-                            title: 'ID Obiektu',
-                            width: '20%',
+                        id_pokoju: {
+                            title: 'ID Pokoju',
                             key: true,
-                            list: true,
+                            list: false,
                             create: true
                         },
-                        nazwa_obiektu: {
+                        id_obiektu: {
                             title: 'Nazwa Obiektu',
                             width: '20%',
                             edit: true
                         },
-                        kod_pocztowy: {
-                            title: 'Kod Pocztowy',
+                        numer_pokoju: {
+                            title: 'Numer Pokoju',
+                            width: '20%',
+                            edit: false
+                        },
+                        cena_za_dzien: {
+                            title: 'Cena za dzień (zł)',
                             width: '20%',
                             edit: true
                         },
-                        miejscowosc: {
-                            title: 'Miejscowość',
+                        
+                        liczba_osob: {
+                            title: 'Liczba osób',
                             width: '20%',
                             edit: true
                         },
-                        ulica: {
-                            title: 'Ulica',
-                            width: '20%',
+                        miejsce_parking: {
+                            title: 'Miejsce na parkingu',
+                            width: '30%',
+                            edit: true
+                        },
+                        miejsce_jadalnia: {
+                            title: 'Miejsce na jadalni',
+                            width: '30%',
                             edit: true
                         }
                     }
                 });
-                $('#ListaObiektow').jtable('load');
+                $('#ListaPokoi').jtable('load');
             });
         </script>
 
@@ -74,7 +84,7 @@
         </div>
 
         <div id="section">
-            <div id="ListaObiektow"></div>
+            <div id="ListaPokoi"></div>
         </div>
 
         <div id="footer">

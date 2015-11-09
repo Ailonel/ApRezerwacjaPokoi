@@ -8,7 +8,7 @@
         serverCommunicationError: 'Wystąpił błąd komunikacji z serwerem.',
         loadingMessage: 'Ładowanie...',
         noDataAvailable: 'Brak rekordów!',
-        addNewRecord: '+ Dodaj nowy wpis',
+        addNewRecord: 'Dodaj nowy wpis',
         editRecord: 'Edytuj',
         areYouSure: 'Czy jesteś tego pewien?',
         deleteConfirmation: 'Ten wpis zostanie usunięty. Kontynuować?',
