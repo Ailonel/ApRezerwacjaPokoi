@@ -6,9 +6,25 @@
         <link rel="stylesheet" href="css/jquery-ui.min.css">
         <script src="js/jquery-1.11.3.js"></script>
         <script src="js/jquery-ui.min.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" charset="utf-8" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.js"></script>
         <script>
-            $(function () {
-                $("#data1").datepicker();
+            $(document).on("click", "#rez", function () {
+                var dataP = $('#dataP').val();
+                var dataW = $('#dataW').val();
+                //var nrPok = $('#nrPok').val();
+                $.get("rezerwacja", {
+                    dataP: dataP,
+                    dataW: dataW
+                            //nrPok: nrPok
+                }, function (responseText) {
+                    $("#tabela").html(responseText);
+                });
             });
         </script>
     </head>
@@ -22,7 +38,6 @@
         <div id="nav">
             <ul>
                 <li><a href ="index.html">Strona Główna<br/></a></li>
-                Galeria<br>
                 <li><a href = "kontakt.html">Kontakt<br/></a></li>
                 <li><a href = "rezerwacja.html">Rezerwacja</a></li>
                 <li><a href = "rejestracja.html">Rejestracja</a></li>
@@ -31,21 +46,31 @@
         </div>
 
         <div id="section">
-            <h1>Rezerwacja</h1>
-            <form method="post" action="rezerwacja">
-                Data Przyjazdu: <input type="date" name="dataP" /><br/>
-                Data Wyjazdu: <input type="date" name="dataW"/><br/>
-                Numer pokoju: <input type="password" name="nrPok" /><br/>
-                <input type ="submit" value="rezerwacja" />
-            </form>
-        </div>
+            <div>
+                <h1>Rezerwacja</h1>
+                Sprawdź dostępność pokoju<br/>
 
+                Data Przyjazdu: <input type="date" id="dataP" /><br/>
+                Data Wyjazdu: <input type="date" id="dataW"/><br/>
+
+                <input type = submit id="rez"/><br/>
+            </div>
+            <table id ="tabela" class = "table">
+                <thead>
+                    <tr>
+                        <th>Obiekt</th>
+                        <th>Nr Pokoju</th>
+                        <th>Liczba Osób</th>
+                        <th>Cena za dzień</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
         <div id="footer">
             Noclegi u Mateusza
         </div>
 
     </body>
-
-
-
 </html>

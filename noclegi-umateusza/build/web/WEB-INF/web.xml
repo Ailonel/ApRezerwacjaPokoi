@@ -4,9 +4,17 @@
         <servlet-name>EdycjaObiektow</servlet-name>
         <servlet-class>zarzadzanie.EdycjaObiektow</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>rezerwacja</servlet-name>
+        <servlet-class>klient.rezerwacja</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EdycjaObiektow</servlet-name>
         <url-pattern>/EdycjaObiektow</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>rezerwacja</servlet-name>
+        <url-pattern>/rezerwacja</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
