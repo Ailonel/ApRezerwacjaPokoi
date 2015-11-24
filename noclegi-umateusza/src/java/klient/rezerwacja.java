@@ -45,15 +45,18 @@ public class rezerwacja extends HttpServlet {
             if (action.equals("insert")) {
                 String nazwaO = request.getParameter("nazwaO");
                 String numerP = request.getParameter("numerP");
-                int pokoj = 0;
+                String pokoj = "0";
+                
                 Statement stm = con.createStatement();
+
                 //ResultSet rs = stm.executeQuery("select p.id_pokoju from pokoj p left join obiekt o on p.id_obiektu=o.id_obiektu where p.numer_pokoju= "+numerP+ "and o.nazwa_obiektu='"+nazwaO+"'");
-                //ResultSet rs = stm.executeQuery("select p.id_pokoju from pokoj p left join obiekt o on p.id_obiektu=o.id_obiektu where o.nazwa_obiektu = '"+nazwaO+"' and p.numer_pokoju = "+numerP);
+                ResultSet rs = stm.executeQuery("select p.id_pokoju from pokoj p left join obiekt o on p.id_obiektu=o.id_obiektu where o.nazwa_obiektu = '"+nazwaO+"' and p.numer_pokoju = "+numerP);
+
+                while (rs.next())
+                    pokoj = rs.getString("id_pokoju");
                 
-               // while (rs.next())
-                  //  pokoj = rs.getInt("id_pokoju");
-                
-                PreparedStatement st = con.prepareStatement("Insert into Rezerwacja values(?,select curdate(),?,?,?,?,?)");
+
+                PreparedStatement st = con.prepareStatement("Insert into Rezerwacja values(?,CURDATE(),?,?,?,?,?)");
 
                 //st.setString(1, "NULL");
                 st.setNull(1, java.sql.Types.INTEGER);
@@ -61,7 +64,9 @@ public class rezerwacja extends HttpServlet {
                 st.setString(3, dataW);
                 st.setString(4, "1");
                 st.setString(5, "1");
-                st.setInt(6, 1);
+                st.setString(6, pokoj);
+                st.executeUpdate();
+                System.out.print(st);
             } else if (action.equals("select")) {
                 Statement st = con.createStatement();
                 //String querry = "select distinct numer_pokoju, id_obiektu, liczba_osob, cena_za_dzien from pokoj p left join rezerwacja r on r.id_pokoju = p.id_pokoju where ('" + dataP + "' < r.data_przyjazdu or '" + dataP + "' >= r.data_wyjazdu) and ('" + dataW + "' <= r.data_przyjazdu or '" + dataW + "' >= r.data_wyjazdu) order by id_obiektu, numer_pokoju";

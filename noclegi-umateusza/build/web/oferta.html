@@ -13,27 +13,12 @@
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
-        <script>
-            $(document).on("click", "#rez", function () {
-
-                var action = 'select';
-                var dataP = $('#dataP').val();
-                var dataW = $('#dataW').val();
-                $.get("rezerwacja", {
-                    action: action,
-                    dataP: dataP,
-                    dataW: dataW
-                }, function (responseText) {
-                    $("#tabela").html(responseText);
-                });
-            });
-            
-            function tab() {
+        <script>        
                 $(document).ready(function () {
 
                     var action = 'select';
-                    var dataP = $('#dataP').val();
-                    var dataW = $('#dataW').val();
+                    var dataP = '2010-11-11';
+                    var dataW = '2010-12-12';
                     $.get("rezerwacja", {
                         action: action,
                         dataP: dataP,
@@ -42,34 +27,6 @@
                         $("#tabela").html(responseText);
                     });
                 });
-            }
-
-            $(document).on("click", ".clickable-row", function () {
-                var action = 'insert';
-                var dataP = $('#dataP').val();
-                var dataW = $('#dataW').val();
-                var nazwaO = $(this).find(".nazwa").text();
-                var numerP = $(this).find(".numer").text();
-                $("#dialog-message").dialog({
-                    modal: true,
-                    buttons: {
-                        "Tak": function () {
-                            $.get("rezerwacja", {
-                                action: action,
-                                dataP: dataP,
-                                dataW: dataW,
-                                nazwaO: nazwaO,
-                                numerP: numerP
-                            }), 
-                                    $(this).dialog("close");
-                            tab();
-                        },
-                        "Nie": function () {
-                            $(this).dialog("close");
-                        }
-                    }
-                });
-            });
         </script>
     </head>
     <body>
@@ -95,14 +52,7 @@
                 </p>
             </div>
             <div>
-                <h1>Rezerwacja</h1>
-                <table class='table'>
-                    <tr>
-                        <td>Data Przyjazdu: <input type="date" id="dataP" /></td>
-                        <td>Data Wyjazdu: <input type="date" id="dataW"/></td>
-                        <td><input type = submit id="rez"/><td>
-                    </tr>
-                </table>
+                <h1>Oferta</h1>
             </div>
             <table id ="tabela" class = "table">
                 <thead>

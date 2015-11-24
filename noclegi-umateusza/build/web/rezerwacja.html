@@ -15,6 +15,7 @@
 
         <script>
             $(document).on("click", "#rez", function () {
+
                 var action = 'select';
                 var dataP = $('#dataP').val();
                 var dataW = $('#dataW').val();
@@ -22,13 +23,27 @@
                     action: action,
                     dataP: dataP,
                     dataW: dataW
-                            //nrPok: nrPok
                 }, function (responseText) {
                     $("#tabela").html(responseText);
                 });
             });
-        </script>
-        <script>
+            
+            function tab() {
+                $(document).ready(function () {
+
+                    var action = 'select';
+                    var dataP = $('#dataP').val();
+                    var dataW = $('#dataW').val();
+                    $.get("rezerwacja", {
+                        action: action,
+                        dataP: dataP,
+                        dataW: dataW
+                    }, function (responseText) {
+                        $("#tabela").html(responseText);
+                    });
+                });
+            }
+
             $(document).on("click", ".clickable-row", function () {
                 var action = 'insert';
                 var dataP = $('#dataP').val();
@@ -43,11 +58,11 @@
                                 action: action,
                                 dataP: dataP,
                                 dataW: dataW,
-                                nazwaO : nazwaO,
-                                numerP : numerP
-                            }
-                            ),
-                            $(this).dialog("close");
+                                nazwaO: nazwaO,
+                                numerP: numerP
+                            }), 
+                                    $(this).dialog("close");
+                            tab();
                         },
                         "Nie": function () {
                             $(this).dialog("close");
@@ -66,6 +81,7 @@
             <ul>
                 <li><a href ="index.html">Strona Główna<br/></a></li>
                 <li><a href = "kontakt.html">Kontakt<br/></a></li>
+                <li><a href = "oferta.html">Oferta<br/></a></li>
                 <li><a href = "rezerwacja.html">Rezerwacja</a></li>
                 <li><a href = "rejestracja.html">Rejestracja</a></li>
                 <li><a href = "logowanie.html">Logowanie</a></li>
@@ -80,12 +96,13 @@
             </div>
             <div>
                 <h1>Rezerwacja</h1>
-                Sprawdź dostępność pokoju<br/>
-
-                Data Przyjazdu: <input type="date" id="dataP" /><br/>
-                Data Wyjazdu: <input type="date" id="dataW"/><br/>
-
-                <input type = submit id="rez"/><br/>
+                <table class='table'>
+                    <tr>
+                        <td>Data Przyjazdu: <input type="date" id="dataP" /></td>
+                        <td>Data Wyjazdu: <input type="date" id="dataW"/></td>
+                        <td><input type = submit id="rez"/><td>
+                    </tr>
+                </table>
             </div>
             <table id ="tabela" class = "table">
                 <thead>
