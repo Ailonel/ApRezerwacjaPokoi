@@ -18,6 +18,8 @@
     float:left;
     padding:5px;
 }
+#dialog-message { display: none}
+
 #footer {
     background-color:black;
     color:white;

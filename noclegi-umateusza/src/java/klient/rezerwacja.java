@@ -37,47 +37,61 @@ public class rezerwacja extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String dataP = request.getParameter("dataP");
             String dataW = request.getParameter("dataW");
-            String pokoj = request.getParameter("nrPok");
+            String action = request.getParameter("action");
 
             Connection con = PolaczenieDB.getConnection();
 
-            //Tworzenie rekordu
-            /*
-             PreparedStatement st = con.prepareStatement("Insert into Rezerwacja values(?,select curdate(),?,?,?,?,?)");
-           
-             //st.setString(1, "NULL");
-             st.setNull(1, java.sql.Types.INTEGER);
-             st.setString(2, dataP);
-             st.setString(3, dataW);
-             st.setString(4, "1");
-             st.setString(5, "1");
-             st.setString(6, pokoj);
-             */
-            Statement st = con.createStatement();
-            //String querry = "select distinct numer_pokoju, id_obiektu, liczba_osob, cena_za_dzien from pokoj p left join rezerwacja r on r.id_pokoju = p.id_pokoju where ('" + dataP + "' < r.data_przyjazdu or '" + dataP + "' >= r.data_wyjazdu) and ('" + dataW + "' <= r.data_przyjazdu or '" + dataW + "' >= r.data_wyjazdu) order by id_obiektu, numer_pokoju";
-            String querry = "select p.numer_pokoju, o.nazwa_obiektu, p.liczba_osob, p.cena_za_dzien from pokoj p left join obiekt o on p.id_obiektu = o.id_obiektu where p.id_pokoju not in (select id_pokoju from rezerwacja where data_przyjazdu <= '" +dataW +"' and data_wyjazdu >='"+dataP+"')";
-            
-            ResultSet rs = st.executeQuery(querry);
-            out.println("<table id =\"tabela\" class = \"table\">");
-            out.println("<thead>");
-            out.println("<tr>");
-            out.println("<th>id obiektu</th>");
-            out.println("<th>numer pokoju</th>");
-            out.println("<th>liczba osob</th>");
-            out.println("<th>cena za dzien</th>");
-            out.println("</tr>");
-            out.println("</thead>");
-            out.println("<tbody>");
-            while (rs.next()) {
-                out.println("<tr onclick = a href= \"kontakt.html\">");
-                out.println("<td>" + rs.getString("nazwa_obiektu") + "</td>");
-                out.println("<td>" + rs.getString("numer_pokoju") + "</td>");
-                out.println("<td>" + rs.getString("liczba_osob") + "</td>");
-                out.println("<td>" + rs.getString("cena_za_dzien") + "</td>");
+//Tworzenie rekordu
+            if (action.equals("insert")) {
+                String nazwaO = request.getParameter("nazwaO");
+                String numerP = request.getParameter("numerP");
+                int pokoj = 0;
+                Statement stm = con.createStatement();
+                //ResultSet rs = stm.executeQuery("select p.id_pokoju from pokoj p left join obiekt o on p.id_obiektu=o.id_obiektu where p.numer_pokoju= "+numerP+ "and o.nazwa_obiektu='"+nazwaO+"'");
+                //ResultSet rs = stm.executeQuery("select p.id_pokoju from pokoj p left join obiekt o on p.id_obiektu=o.id_obiektu where o.nazwa_obiektu = '"+nazwaO+"' and p.numer_pokoju = "+numerP);
+                
+               // while (rs.next())
+                  //  pokoj = rs.getInt("id_pokoju");
+                
+                PreparedStatement st = con.prepareStatement("Insert into Rezerwacja values(?,select curdate(),?,?,?,?,?)");
+
+                //st.setString(1, "NULL");
+                st.setNull(1, java.sql.Types.INTEGER);
+                st.setString(2, dataP);
+                st.setString(3, dataW);
+                st.setString(4, "1");
+                st.setString(5, "1");
+                st.setInt(6, 1);
+            } else if (action.equals("select")) {
+                Statement st = con.createStatement();
+                //String querry = "select distinct numer_pokoju, id_obiektu, liczba_osob, cena_za_dzien from pokoj p left join rezerwacja r on r.id_pokoju = p.id_pokoju where ('" + dataP + "' < r.data_przyjazdu or '" + dataP + "' >= r.data_wyjazdu) and ('" + dataW + "' <= r.data_przyjazdu or '" + dataW + "' >= r.data_wyjazdu) order by id_obiektu, numer_pokoju";
+                String querry = "select p.numer_pokoju, o.nazwa_obiektu, p.liczba_osob, p.cena_za_dzien from pokoj p left join obiekt o on p.id_obiektu = o.id_obiektu where p.id_pokoju not in (select id_pokoju from rezerwacja where data_przyjazdu <= '" + dataW + "' and data_wyjazdu >='" + dataP + "')";
+
+                ResultSet rs = st.executeQuery(querry);
+                out.println("<table id =\"tabela\" class = \"table\">");
+                out.println("<thead>");
+                out.println("<tr>");
+                out.println("<th>Grafika</th>");
+                out.println("<th>Nazwa Obiektu</th>");
+                out.println("<th>Numer pokoju</th>");
+                out.println("<th>Liczba osób</th>");
+                out.println("<th>Cena za dzień (zł)</th>");
                 out.println("</tr>");
+                out.println("</thead>");
+                out.println("<tbody>");
+                while (rs.next()) {
+                    out.println("<tr class = \'clickable-row\'>");
+                    //out.println("<td><img src=\"/Foto/U_Mateusza/1.jpg\">");
+                    out.println("<td><img src=\"http://www.bieszczadypolska.pl/panelfiles/umateusza_panel_69595516.jpg\">");
+                    out.println("<td class = \'nazwa\'>" + rs.getString("nazwa_obiektu") + "</td>");
+                    out.println("<td class = \' numer\'>" + rs.getString("numer_pokoju") + "</td>");
+                    out.println("<td>" + rs.getString("liczba_osob") + "</td>");
+                    out.println("<td>" + rs.getString("cena_za_dzien") + "</td>");
+                    out.println("</tr>");
+                }
+                out.println("</tbody>");
+                out.println("</table>");
             }
-            out.println("</tbody>");
-            out.println("</table>");
             //int i = st.executeUpdate();
 
             //if (i > 0) {
