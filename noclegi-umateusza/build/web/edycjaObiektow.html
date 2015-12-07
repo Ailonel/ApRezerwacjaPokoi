@@ -4,7 +4,10 @@
         <title>EdycjaObiektow</title>
         <meta charset="utf-8">
         <!-- Styl strony. -->
-        <link rel="stylesheet" type="text/css" href="css/panel.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/panelcss.css">
         <!-- Styl jTable Metro -->
         <link href="css/metro/blue/jtable.css" rel="stylesheet" type="text/css" />
         <link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
@@ -18,7 +21,6 @@
                 $('#ListaObiektow').jtable({
                     title: 'Lista Obiektów',
                     sorting: true,
-             
                     actions: {
                         listAction: 'EdycjaObiektow?action=list',
                         createAction: 'EdycjaObiektow?action=create',
@@ -61,23 +63,23 @@
 
     </head>
     <body>
-        <div id="header">
+        <div class="container-fluid">
             <h1>Panel Administracyjny</h1>
         </div>
 
-        <div id="nav">
+        <div class="col-md-2 sidenav">
 
-            <ul>
+            <ul class="nav nav-pills nav-stacked">
                 <li><a href ="edycjaObiektow.html">Edycja Obiektów<br/></a></li>
                 <li><a href ="edycjaPokoi.html">Edycja Pokoi<br/></a></li>
             </ul>
         </div>
 
-        <div id="section">
+        <div class="col-md-10">
             <div id="ListaObiektow"></div>
         </div>
 
-        <div id="footer">
+        <div class="container-fluid">
             Noclegi u Mateusza
         </div>
     </body>

@@ -1,0 +1,29 @@
+.container{
+    height: 1000px;
+    background-color: aliceblue;
+    padding: 0px;
+}
+
+.row {
+    background-color: #ddd;
+}
+
+.col-md-2{
+
+}
+
+.col-md-12{
+    background-color: white;
+    height: 100%;
+}
+
+#dialog-message { display: none}
+#log1 { display: none}
+#log2 { display: none}
+#rej { display: none}
+
+.modal-header {
+      background-color: #5cb85c;
+      color:white !important;
+      text-align: center;
+  }

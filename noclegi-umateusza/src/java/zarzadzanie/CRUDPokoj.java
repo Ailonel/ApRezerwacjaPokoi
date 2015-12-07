@@ -27,8 +27,8 @@ public class CRUDPokoj {
         try {
             PreparedStatement st = con.prepareStatement("insert into Pokoj values (?,?,?,?,?,?,?)");
             st.setInt(1, pokoj.getIdPokoju());
-            st.setInt(2, pokoj.getCenaZaDzien());
-            st.setInt(3, pokoj.getNumerPokoju());
+            st.setInt(2, pokoj.getNumerPokoju());
+            st.setInt(3, pokoj.getCenaZaDzien());
             st.setInt(4, pokoj.getLiczbaOsob());
             st.setInt(5, pokoj.getMiejsceParking());
             st.setInt(6, pokoj.getMiejsceJadalnia());

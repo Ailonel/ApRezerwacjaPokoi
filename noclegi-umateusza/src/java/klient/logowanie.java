@@ -14,7 +14,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.RequestDispatcher;
+import polaczenie.PolaczenieDB;
 
 /**
  *
@@ -40,28 +42,28 @@ public class logowanie extends HttpServlet {
 
             String email = request.getParameter("email");
             String haslo = request.getParameter("haslo");
+            String action = request.getParameter("action");
             
-            Class.forName("com.mysql.jdbc.Driver");
-            //Połączenie z bazą danych
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rezerwacja_pokoi", "root", "root");
-            
+            Connection con = PolaczenieDB.getConnection();
+            System.out.println(email);
+            System.out.println(action);
             //szukanie rekordu
             PreparedStatement st = con.prepareStatement("select * from Uzytkownik where email=? and haslo=?");
             st.setString(1, email);
-            st.setString(2, haslo);
-            
+            st.setString(2, haslo);    
             ResultSet rs=st.executeQuery();
             status=rs.next();
+            
             if(status){
-                request.getSession().setAttribute("zalogowany", email);
+                Cookie logowanie = new Cookie ("user", email);
+                logowanie.setMaxAge(60*10);
+                response.addCookie(logowanie);
                 out.print("Zostałeś pomyślnie zalogowany");
-                out.print("<br/><a href =\"index.html\">Strona Główna<br/></a>");
+                out.print("<br/><a href =\"index.jsp\">Strona Główna<br/></a>");
+                System.out.println(logowanie.getValue());
             }
             else{
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/logowanie.html");
-                //PrintWriter out= response.getWriter();
                 out.println("<font color=red>Niepoprawny login lub hasło</font>");
-                rd.include(request, response);
             }
         }catch (Exception se) {
             se.printStackTrace();
