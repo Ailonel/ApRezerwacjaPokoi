@@ -23,39 +23,8 @@
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
         <script>
-            $(document).on("click", "#rez", function () {
-                var action = 'select';
-                var dataP = $('#dataP').val();
-                var dataW = $('#dataW').val();
-                $.get("rezerwacja", {
-                    action: action,
-                    dataP: dataP,
-                    dataW: dataW
-                }, function (responseText) {
-                    $("#tabela").html(responseText);
-                });
-            });
-            //lista dokonanych rezerwacji
-            $(document).on("click", "#lRez", function () {
-                //$(document).ready(function () {
-                var action = 'obecne';
-                $.get("rezerwacja", {
-                    action: action
-                }, function (responseText) {
-                    $("#obecne").html(responseText);
-                });
-            });
-            $(document).on("click", "#2Rez", function () {
-                //$(document).ready(function () {
-                var action = 'zakonczone';
-                $.get("rezerwacja", {
-                    action: action
-                }, function (responseText) {
-                    $("#zakonczone").html(responseText);
-                });
-            });
-            function tab2() {
-                $(document).ready(function () {
+            function tabelaObecne() {
+                $(function () {
                     var action = 'obecne';
                     $.get("rezerwacja", {
                         action: action
@@ -65,9 +34,8 @@
                 });
             }
 
-            function tab() {
-                $(document).ready(function () {
-
+            function tabelaNowe() {
+                $(function () {
                     var action = 'select';
                     var dataP = $('#dataP').val();
                     var dataW = $('#dataW').val();
@@ -76,10 +44,27 @@
                         dataP: dataP,
                         dataW: dataW
                     }, function (responseText) {
-                        $("#tabela").html(responseText);
+                        $("#lista").html(responseText);
                     });
                 });
             }
+            $(document).on("click", "#sprawdz", function () {
+                tabelaNowe();
+            });
+            $(document).on("click", "#noweRezerwacje", function () {
+                tabelaNowe();
+            });
+            $(document).on("click", "#rezerwacje", function () {
+                tabelaObecne();
+            });
+            $(document).on("click", "#historia", function () {
+                var action = 'zakonczone';
+                $.get("rezerwacja", {
+                    action: action
+                }, function (responseText) {
+                    $("#zakonczone").html(responseText);
+                });
+            });
             $(document).on("click", "#pRezerwuj", function () {
                 var action = 'insert';
                 var dataP = $('#dataP').val();
@@ -94,7 +79,7 @@
                     nazwaO: nazwaO,
                     numerP: numerP
                 });
-                tab();
+                tabelaNowe();
             });
             $(document).on("click", "#pUsun", function () {
                 var action = 'delete';
@@ -110,7 +95,7 @@
                     nazwaO: nazwaO,
                     numerP: numerP
                 });
-                tab2();
+                tabelaObecne();
             });
             $(document).on("click", "#pPotwierdz", function () {
                 var action = 'update';
@@ -126,7 +111,7 @@
                     nazwaO: nazwaO,
                     numerP: numerP
                 });
-                tab2();
+                tabelaObecne();
             });
         </script>
     </head>
@@ -146,9 +131,9 @@
 
             <div class="container-fluid">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#nowa">Nowa</a></li>
-                    <li><a id="lRez" data-toggle = "tab" href="#obecne">Obecne</a></li>
-                    <li><a id="2Rez" data-toggle = "tab" href="#zakonczone">Zakończone</a></li>
+                    <li class="active"><a data-toggle="tab" id="noweRezerwacje" href="#nowa">Nowa</a></li>
+                    <li><a id="rezerwacje" data-toggle = "tab" href="#obecne">Obecne</a></li>
+                    <li><a id="historia" data-toggle = "tab" href="#zakonczone">Zakończone</a></li>
                 </ul>
                 <div class ="tab-content">
                     <div id="nowa" class = "tab-pane fade in active">
@@ -156,59 +141,13 @@
                             <tr>
                                 <td>Data Przyjazdu: <input type="date" id="dataP" /></td>
                                 <td>Data Wyjazdu: <input type="date" id="dataW"/></td>
-                                <td><input type = submit id="rez"/><td>
+                                <td><input type = submit id="sprawdz"/><td>
                             </tr>
                         </table>
-                        <table id ="tabela" class = "table">
-                            <thead>
-                                <tr>
-                                    <th>Grafika</th>
-                                    <th>Nazwa Obiektu</th>
-                                    <th>Numer uokoju</th>
-                                    <th>Liczba osób</th>
-                                    <th>Cena za dzień (zł)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div id="lista"></div>
                     </div>
-                    <div id ="obecne" class = "tab-pane fade">
-                        <table id ="tabela" class = "table">
-                            <thead>
-                                <tr>
-                                    <th>Grafika</th>
-                                    <th>Nazwa Obiektu</th>
-                                    <th>Numer uokoju</th>
-                                    <th>Liczba osób</th>
-                                    <th>Cena za dzień (zł)</th>
-                                    <th>Data Przyjazdu</th>
-                                    <th>Data Wyjazdu</th>
-                                    <th>Potwierdzenie</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id ="zakonczone" class = "tab-pane fade">
-                        <table id ="tabela" class = "table">
-                            <thead>
-                                <tr>
-                                    <th>Grafika</th>
-                                    <th>Nazwa Obiektu</th>
-                                    <th>Numer uokoju</th>
-                                    <th>Liczba osób</th>
-                                    <th>Cena za dzień (zł)</th>
-                                    <th>Data Przyjazdu</th>
-                                    <th>Data Wyjazdu</th>
-                                    <th>Potwierdzenie</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div id ="obecne" class = "tab-pane fade"></div>
+                    <div id ="zakonczone" class = "tab-pane fade"> </div>
                 </div>
             </div>
             <div class = "section">

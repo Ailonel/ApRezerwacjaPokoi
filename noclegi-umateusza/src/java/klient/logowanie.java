@@ -39,38 +39,35 @@ public class logowanie extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         boolean status;
         try (PrintWriter out = response.getWriter()) {
-
             String email = request.getParameter("email");
             String haslo = request.getParameter("haslo");
-            String action = request.getParameter("action");
             
+            //połączenie z bazą danych
             Connection con = PolaczenieDB.getConnection();
-            System.out.println(email);
-            System.out.println(action);
-            //szukanie rekordu
+            
+            //szukanie użytkownika
             PreparedStatement st = con.prepareStatement("select * from Uzytkownik where email=? and haslo=?");
             st.setString(1, email);
             st.setString(2, haslo);    
             ResultSet rs=st.executeQuery();
             status=rs.next();
             
+            //tworzenie ciasteczka lub wiadomość o niepowodzeniu
             if(status){
                 Cookie logowanie = new Cookie ("user", email);
                 logowanie.setMaxAge(60*10);
                 response.addCookie(logowanie);
-                out.print("Zostałeś pomyślnie zalogowany");
-                out.print("<br/><a href =\"index.jsp\">Strona Główna<br/></a>");
-                System.out.println(logowanie.getValue());
+                out.println("0");
             }
             else{
-                out.println("<font color=red>Niepoprawny login lub hasło</font>");
+                out.println("<div class =\"alert alert-warning\">");
+                out.println("<strong>Błąd:<strong> Niepoprawny login lub hasło</font>");
+                out.println("</div>");
             }
         }catch (Exception se) {
             se.printStackTrace();
-        }
-        
+        }   
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -109,5 +106,4 @@ public class logowanie extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

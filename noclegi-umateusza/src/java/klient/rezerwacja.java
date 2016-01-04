@@ -7,6 +7,8 @@ package klient;
  */
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.text.*;
 import java.sql.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -75,8 +77,7 @@ public class rezerwacja extends HttpServlet {
                 st.setString(5, pokoj);
                 st.executeUpdate();
                 System.out.print(st);
-            }
-            //Usuwanie rezerwacji
+            } //Usuwanie rezerwacji
             else if (action.equals("delete")) {
                 String nazwaO = request.getParameter("nazwaO");
                 String numerP = request.getParameter("numerP");
@@ -91,55 +92,72 @@ public class rezerwacja extends HttpServlet {
 
                 Statement st = con.createStatement();
                 st.executeUpdate("Delete from rezerwacja where id_uzytkownika = (select id_uzytkownika from uzytkownik where email = '" + nazwa + "') and id_pokoju =" + pokoj + " and data_przyjazdu = '" + dataP + "' and data_wyjazdu ='" + dataW + "'");
-            } 
-            //Wyświetlanie wolnych pokoi w danym terminie
+            } //Wyświetlanie wolnych pokoi w danym terminie
             else if (action.equals("select")) {
-                Statement st = con.createStatement();
-                //String querry = "select distinct numer_pokoju, id_obiektu, liczba_osob, cena_za_dzien from pokoj p left join rezerwacja r on r.id_pokoju = p.id_pokoju where ('" + dataP + "' < r.data_przyjazdu or '" + dataP + "' >= r.data_wyjazdu) and ('" + dataW + "' <= r.data_przyjazdu or '" + dataW + "' >= r.data_wyjazdu) order by id_obiektu, numer_pokoju";
-                String querry = "select p.numer_pokoju, o.nazwa_obiektu, p.liczba_osob, p.cena_za_dzien from pokoj p left join obiekt o on p.id_obiektu = o.id_obiektu where p.id_pokoju not in (select id_pokoju from rezerwacja where data_przyjazdu <= '" + dataW + "' and data_wyjazdu >='" + dataP + "')";
-
-                ResultSet rs = st.executeQuery(querry);
-                out.println("<table id =\"tabela\" class = \"table\">");
-                out.println("<thead>");
-                out.println("<tr>");
-                out.println("<th>Grafika</th>");
-                out.println("<th>Nazwa Obiektu</th>");
-                out.println("<th>Numer pokoju</th>");
-                out.println("<th>Liczba osób</th>");
-                out.println("<th>Cena za dzień (zł)</th>");
-                out.println("<th></th>");
-                out.println("</tr>");
-                out.println("</thead>");
-                out.println("<tbody>");
-                while (rs.next()) {
-                    out.println("<tr class = \'clickable-row\'>");
-                    //out.println("<td><img src=\"/Foto/U_Mateusza/1.jpg\">");
-                    out.println("<td><img src=\"http://www.bieszczadypolska.pl/panelfiles/umateusza_panel_69595516.jpg\">");
-                    out.println("<td class = \'nazwa\'>" + rs.getString("nazwa_obiektu") + "</td>");
-                    out.println("<td class = \' numer\'>" + rs.getString("numer_pokoju") + "</td>");
-                    out.println("<td>" + rs.getString("liczba_osob") + "</td>");
-                    out.println("<td>" + rs.getString("cena_za_dzien") + "</td>");
-                    out.println("<td><button id=\"pRezerwuj\"type=\"button\" class=\"btn btn-default\">Rezerwuj</button></td>");
-                    //out.println("<td><input type = submit id=\"pRezerwuj\"/><td>");
+                DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+                Date date = new Date();
+                Date d1 = df.parse(dataP);
+                Date d2 = df.parse(dataW);
+                //sprawdzanie poprawności daty
+                if (dataP.equals("") || dataW.equals("")) {
+                    out.println("<div class =\"alert alert-warning\">");
+                    out.println("<strong>Błąd:<strong> Nie podano daty</font>");
+                    out.println("</div>");
+                } 
+                
+                else if (d1.after(d2) || date.after(d1) || date.after(d2))
+                {
+                    out.println("<div class =\"alert alert-warning\">");
+                    out.println("<strong>Błąd:<strong> Błędnie wprowadzona data </font>");
+                    out.println("</div>");
                 }
-                out.println("</tbody>");
-                out.println("</table>");
-            } else if(action.equals("update")){
+
+                else {
+                    Statement st = con.createStatement();
+                    String querry = "select p.numer_pokoju, o.nazwa_obiektu, p.liczba_osob, p.cena_za_dzien from pokoj p left join obiekt o on p.id_obiektu = o.id_obiektu where p.id_pokoju not in (select id_pokoju from rezerwacja where data_przyjazdu <= '" + dataW + "' and data_wyjazdu >='" + dataP + "')";
+
+                    ResultSet rs = st.executeQuery(querry);
+                    out.println("<table id =\"tabela\" class = \"table\">");
+                    out.println("<thead>");
+                    out.println("<tr>");
+                    out.println("<th>Grafika</th>");
+                    out.println("<th>Nazwa Obiektu</th>");
+                    out.println("<th>Numer pokoju</th>");
+                    out.println("<th>Liczba osób</th>");
+                    out.println("<th>Cena za dzień (zł)</th>");
+                    out.println("<th></th>");
+                    out.println("</tr>");
+                    out.println("</thead>");
+                    out.println("<tbody>");
+                    while (rs.next()) {
+                        out.println("<tr class = \'clickable-row\'>");
+                        //out.println("<td><img src=\"/Foto/U_Mateusza/1.jpg\">");
+                        out.println("<td><img src=\"http://www.bieszczadypolska.pl/panelfiles/umateusza_panel_69595516.jpg\">");
+                        out.println("<td class = \'nazwa\'>" + rs.getString("nazwa_obiektu") + "</td>");
+                        out.println("<td class = \' numer\'>" + rs.getString("numer_pokoju") + "</td>");
+                        out.println("<td>" + rs.getString("liczba_osob") + "</td>");
+                        out.println("<td>" + rs.getString("cena_za_dzien") + "</td>");
+                        out.println("<td><button id=\"pRezerwuj\"type=\"button\" class=\"btn btn-default\">Rezerwuj</button></td>");
+                        //out.println("<td><input type = submit id=\"pRezerwuj\"/><td>");
+                    }
+                    out.println("</tbody>");
+                    out.println("</table>");
+                }
+            //Potwierdzenie rezerwacji
+            } else if (action.equals("update")) {
                 String nazwaO = request.getParameter("nazwaO");
                 String numerP = request.getParameter("numerP");
                 String pokoj = "select p.id_pokoju from pokoj p left join obiekt o on p.id_obiektu=o.id_obiektu where o.nazwa_obiektu = '" + nazwaO + "' and p.numer_pokoju = " + numerP;
 
                 Statement st = con.createStatement();
                 st.executeUpdate("update rezerwacja set rezerwacja.potwierdzenie = 0 where id_uzytkownika = (select id_uzytkownika from uzytkownik where email = '" + nazwa + "') and id_pokoju =(" + pokoj + ") and data_przyjazdu = '" + dataP + "' and data_wyjazdu ='" + dataW + "'");
-            
-            }
 
-//Przeglądanie dokonanych rezerwacji
+            } //Przeglądanie dokonanych rezerwacji
             else if (action.equals("obecne")) {
                 Statement st = con.createStatement();
                 String querry = "select r.id_rezerwacji, p.numer_pokoju, o.nazwa_obiektu, p.liczba_osob, p.cena_za_dzien, r.data_rezerwacji, r.data_przyjazdu, r.data_wyjazdu, r.potwierdzenie from rezerwacja r left join pokoj p on r.id_pokoju=p.id_pokoju, obiekt o where r.id_uzytkownika = (select id_uzytkownika from uzytkownik where email = '" + nazwa + "') and r.data_wyjazdu >= CURDATE() order by r.data_rezerwacji desc, r.data_przyjazdu desc;";
                 ResultSet rs = st.executeQuery(querry);
-                
+
                 out.println("<table id =\"tabela\" class = \"table\">");
                 out.println("<thead>");
                 out.println("<tr>");
@@ -180,11 +198,12 @@ public class rezerwacja extends HttpServlet {
                 }
                 out.println("</tbody>");
                 out.println("</table>");
+            //Historia rezerwacji
             } else if (action.equals("zakonczone")) {
                 Statement st = con.createStatement();
                 String querry = "select r.id_rezerwacji, p.numer_pokoju, o.nazwa_obiektu, p.liczba_osob, p.cena_za_dzien, r.data_rezerwacji, r.data_przyjazdu, r.data_wyjazdu, r.potwierdzenie from rezerwacja r left join pokoj p on r.id_pokoju=p.id_pokoju, obiekt o where r.id_uzytkownika = (select id_uzytkownika from uzytkownik where email = '" + nazwa + "') and r.data_wyjazdu < CURDATE()";
                 ResultSet rs = st.executeQuery(querry);
-                
+
                 out.println("<table id =\"tabela\" class = \"table\">");
                 out.println("<thead>");
                 out.println("<tr>");
@@ -211,7 +230,7 @@ public class rezerwacja extends HttpServlet {
                     out.println("<td class = \'dPrzyjazdu\'>" + rs.getString("data_przyjazdu") + "</td>");
                     out.println("<td class = \'dWyjazdu\'>" + rs.getString("data_wyjazdu") + "</td>");
                     out.println("</tr>");
-                                    System.out.println(rs.getString("numer_pokoju"));
+                    System.out.println(rs.getString("numer_pokoju"));
                 }
                 out.println("</tbody>");
                 out.println("</table>");

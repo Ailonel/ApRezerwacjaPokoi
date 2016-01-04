@@ -5,7 +5,6 @@ package klient;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -34,6 +33,8 @@ public class rejestracja extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        boolean status;
         try (PrintWriter out = response.getWriter()) {
             String imie = request.getParameter("imie");
             String nazwisko = request.getParameter("nazwisko");
@@ -43,21 +44,39 @@ public class rejestracja extends HttpServlet {
 
             Connection con = PolaczenieDB.getConnection();
 
-            //Tworzenie rekordu
-            PreparedStatement st = con.prepareStatement("Insert into uzytkownik values(?,?,?,?,?,?)");
+            //sprawdzenie wypełnienia wymaganych pól
+            if (email.equals("") || haslo.equals("")) {
+                out.println("<div class =\"alert alert-warning\">");
+                out.println("<strong>Błąd:<strong> Brak wymaganych danych </font>");
+                out.println("</div>");
+            } else {
+                Statement stc = con.createStatement();
+                ResultSet rs = stc.executeQuery("select email from uzytkownik where email = \"" + email + "\"");
+                status = rs.next();
 
-            //st.setString(1, "NULL");
-            st.setNull(1, java.sql.Types.INTEGER);
-            st.setString(3, imie);
-            st.setString(4, nazwisko);
-            st.setString(5, email);
-            st.setString(6, tel);
-            st.setString(2, haslo);
+                //sprawdzenie czy istnieje konto o podanym email
+                if (status) {
+                    out.println("<div class =\"alert alert-warning\">");
+                    out.println("<strong>Błąd:<strong> Istnieje konto o podanym adresie </font>");
+                    out.println("</div>");
+                } 
+                //dodanie użytkownika
+                else {
+                    //Dodawanie nowego użytkownika
+                    PreparedStatement st = con.prepareStatement("Insert into uzytkownik values(?,?,?,?,?,?)");
 
-            int i = st.executeUpdate();
-            if (i > 0) {
-                out.println("Rejestracja zakończona pomyślnie!");
-                out.print("<br/><a href =\"index.html\">Strona Główna<br/></a>");
+                    st.setNull(1, java.sql.Types.INTEGER);
+                    st.setString(3, imie);
+                    st.setString(4, nazwisko);
+                    st.setString(5, email);
+                    st.setString(6, tel);
+                    st.setString(2, haslo);
+
+                    int i = st.executeUpdate();
+                    if (i > 0) {
+                        out.print("0");
+                    }
+                }
             }
         } catch (Exception se) {
             se.printStackTrace();
