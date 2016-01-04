@@ -139,8 +139,8 @@
                     <div id="nowa" class = "tab-pane fade in active">
                         <table class='table'>
                             <tr>
-                                <td>Data Przyjazdu: <input type="date" id="dataP" /></td>
-                                <td>Data Wyjazdu: <input type="date" id="dataW"/></td>
+                                <td>Data Przyjazdu: <input type="date" placeholder = "rrrr-mm-dd" id="dataP" /></td>
+                                <td>Data Wyjazdu: <input type="date" placeholder="rrrr-mm-dd" id="dataW"/></td>
                                 <td><input type = submit id="sprawdz"/><td>
                             </tr>
                         </table>

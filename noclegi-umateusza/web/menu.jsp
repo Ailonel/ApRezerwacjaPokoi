@@ -21,7 +21,8 @@
         $("#Wylogowanie").modal();
     });
     
-    $(document).on("click", "#logowanieSubmit", function () {
+    $(document).on("click", "#logowanieSubmit", function (event) {
+        event.preventDefault();
         var action = 'logowanie';
         var email = $('#emailL').val();
         var haslo = $('#hasloL').val();
@@ -36,10 +37,10 @@
             else 
                 location.reload();
         });
-        event.preventDefault();
     });
     
-    $(document).on("click", "#rejestracjaSubmit", function () {
+    $(document).on("click", "#rejestracjaSubmit", function (event) {
+        event.preventDefault();
         var email = $('#emailR').val();
         var haslo = $('#hasloR').val();
         var imie = $('#imieR').val();
@@ -61,7 +62,6 @@
             else 
                 location.reload();
         });
-        event.preventDefault();
     });
 
 
