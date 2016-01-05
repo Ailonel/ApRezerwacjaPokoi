@@ -14,7 +14,7 @@ nr_telefonu varchar (20)
 
 Create Table Obiekt
 (
-id_obiektu int not null primary key auto_increment,
+id_obiektu int not null primary key,
 nazwa_obiektu varchar(30),
 kod_pocztowy varchar(30),
 miejscowosc varchar(30),
@@ -37,8 +37,8 @@ id_obiektu int references Obiekt(id_obiektu)
 Create Table Pokoj
 (
 id_pokoju int not null primary key auto_increment,
+numer_pokoju,
 cena_za_dzien int,
-rodzaj_pokoju varchar(10),
 liczba_osob int,
 miejsce_parking int,
 miejsce_jadalnia int,
@@ -55,9 +55,7 @@ potwierdzenie bool,
 
 id_uzytkownika int references Uzytkownik(id_uzytkownika),
 id_pokoju int references Pokoj(id_pokoju)
-
 );
-
 
 Create Table Zameldowanie
 (
@@ -72,7 +70,10 @@ id_pokoju int references Pokoj(id_pokoju),
 id_rezerwacji int references Rezerwacja(id_rezerwacji)
 );
 
-
-
-
-
+Create Table Pokoj_Zdjecie
+(
+id_zdjecie int not null primary key auto_increment,
+miniatura bool,
+zdjecie varchar(40),
+id_pokoju int references Pokoj(id_pokoju)
+);
